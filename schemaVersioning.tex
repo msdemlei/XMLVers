@@ -1,0 +1,128 @@
+\documentclass[11pt,a4paper]{ivoa}
+\input tthdefs
+
+\usepackage{listings}
+\lstloadlanguages{sh,make,[latex]tex}
+\lstset{flexiblecolumns=true,numberstyle=\small,numbers=left,
+  identifierstyle=\texttt,defaultdialect=[latex]tex,language=tex}
+
+\usepackage{todonotes}
+
+\usepackage[utf8]{inputenc}
+
+\definecolor{texcolor}{rgb}{0.4,0.1,0.1}
+\newcommand{\texword}[1]{\texttt{\color{texcolor} #1}}
+
+\iftth
+  \newcommand{\BibTeX}{BibTeX}
+\fi
+
+\iftth
+ \newcommand{\comicstuff}[1]{
+    \begin{html}<span class="comic">#1</span>\end{html}}
+\else
+  \newcommand{\comicstuff}[1]{(HTML exclusive material)}
+\fi
+\customcss{custom.css}
+
+\title{XML Schema Versioning Policies}
+
+\ivoagroup{Standards and Processes}
+
+\author[http://www.ivoa.net/cgi-bin/twiki/bin/view/IVOA/PaulHarrison]{Paul Harrison}
+\author[http://www.ivoa.net/cgi-bin/twiki/bin/view/IVOA/MarkusDemleitner]{Markus Demleitner}
+\author[http://www.ivoa.net/cgi-bin/twiki/bin/view/IVOA/BrianMajor]{Brian Major}
+\author[http://www.ivoa.net/cgi-bin/twiki/bin/view/IVOA/PatDowler]{Pat Dowler}
+
+\editor{Paul Harrison}
+
+\previousversion{This is the first public release}
+       
+
+\begin{document}
+
+\SVN$Rev: 2940 $
+\SVN$Date: 2015-05-04 10:52:00 +0100 (Mon, 04 May 2015) $
+\SVN$URL: https://volute.googlecode.com/svn/trunk/projects/ivoapub/ivoatexDoc/ivoatexDoc.tex $
+
+\begin{abstract}
+This note describes the recommended practice for the evolution of IVOA
+standard XML schemata.  The criteria for deciding what might be considered major
+and minor changes and the policies for dealing with each case are described.
+\end{abstract}
+
+
+\section*{Acknowledgments}
+
+The content of this note is derived from discussions that occurred in a splinter
+session at the June 2015 IVOA interoperability meeting in Sesto, Italy.
+
+\section{Introduction}
+
+Many of the standard protocols and data models developed by
+the International Virtual Observatory Association (IVOA) have used XML
+\citet{std:XML} for message or object serialization. The content of this XML has
+been defined using XML schema definition language (XSD) \citet{std:XSD}.  As
+these are normative texts, attention to detail is very important, and being able to rigorously track changes to the documents is highly advantageous.  
+
+
+As mandated by \citet{std:docSTD}, 
+
+\url{http://www.xfront.com/Versioning.pdf}
+
+\section{Schema Use}
+\subsection{Server use}
+\subsection{Client use}
+\section{Schema Versioning}
+\subsection{Minor changes}
+\subsubsection{Determining if the changes are indeed minor}
+\subsection{Indicating the version number}
+\subse
+\section{Hosting the Schema on the IVOA web site}
+Existing practice has used namespace URIs that correspond to a URL that points
+to the 
+\section{Summary of Recommendations}
+This section summarizes the main recommendations contained within this document.
+
+\begin{itemize}
+\item Namespace URL should contain only the associated standard major number
+(x.0).
+
+\item Include a version attribute in the top level element to allow client
+version discovery - this version number should include the full standard version
+number including the minor version increment. - 1.1
+
+\item Set the version attribute of the <schema> element in the XSD to be equal
+to the full standard version including the minor version increment and document status - to
+allow software writers to be clear about exactly which version of the schema
+they are using 1.1-20150607-WD
+
+\item Minor version changes should not break clients - i.e. in general they
+should only add new elements/attributes, not remove formerly valid content -
+correspondingly, this means that clients should quietly ignore things that they
+do not know about in the XML - i.e. they should not automatically issue an error
+if schema validation fails (though of course if they can determine that the
+validation error is because of a missing required element then they should
+issue an error).
+\item In contrast servers must produce strictly valid documents, and service
+validators must test strict validity against the relevant schema (discovered
+from the namespace and the version element)
+\end{itemize}
+
+
+
+
+\appendix
+
+
+\section{Changes from Previous Versions}
+
+No previous versions yet.  
+% these would be subsections "Changes from v. WD-..."
+% Use itemize environments.
+
+
+\bibliography{ivoatex/ivoabib}
+
+
+\end{document}
