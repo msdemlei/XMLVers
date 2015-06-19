@@ -52,6 +52,7 @@ and minor changes and the policies for dealing with each case are described.
 \end{abstract}
 
 
+
 \section*{Acknowledgments}
 
 The content of this note is derived from discussions that occurred in a splinter
@@ -62,25 +63,77 @@ session at the June 2015 IVOA interoperability meeting in Sesto, Italy.
 Many of the standard protocols and data models developed by
 the International Virtual Observatory Association (IVOA) have used XML
 \citet{std:XML} for message or object serialization. The content of this XML has
-been defined using XML schema definition language (XSD) \citet{std:XSD}.  As
-these are normative texts, attention to detail is very important, and being able to rigorously track changes to the documents is highly advantageous.  
+been defined using XML schema definition language (XSD) \citet{std:XSD}. The
+particular schema that has been associated with a standard 
+is defined by the ``target namespace'' (hereafter refered to as simply ``the
+namespace'') of the schema - the namespace identifier itself is a URI that
+typically has a form that contains the version number of the standard. There
+exist in many programming languages XML parsers that can use the XSD schema
+automatically to do a strong check whether an instance of an XML
+document conforms to the given schema. If the XML document does conform to the
+structure defined by the schema then it is known as ``valid'' and even a small
+deviation from the specified structure will mean that the XML instance is
+``invalid''. This strong check of validity is extremely useful in the context of
+interoperating services and clients within the VO as it guarantees that both
+sides of an interaction will agree on the content of the document. To maintain
+this behaviour, the conventional XSD practice is to give the schema a new
+identity (namespace) if any changes are made to it so that both client and
+server can agree on the exact version of a schema that they are using for
+checking validity of an XML instance.
 
-
-As mandated by \citet{std:docSTD}, 
+Once a VO service has been standardised there will typically be a growing number
+of clients that are coded against the particular version of the
+schema - any changes to the definition of the schema that is subsequently used
+by a new version of the service to create instance documents will result in
+immediate classification as ``invalid'' by the clients that have not themselves being
+updated to use the new schema.
+As explained above, in general this property is desireable for guaranteeing interoperability, but it does limit
+the ability even to correct errors in the original schema definition without
+causing distruption to the deployed clients. This note describes the
+circumstances in which it is permissible to make changes to a schema and not
+change its namespace.
 
 \url{http://www.xfront.com/Versioning.pdf}
 
-\section{Schema Use}
-\subsection{Server use}
-\subsection{Client use}
+
 \section{Schema Versioning}
+It is the case that two XML instances are formally regarded by XML
+conventions as not equivalent if the only textual difference between them is
+that the namespace declaration is not the same. We
+can use the observation that simply removing the namespace definition from both instances
+would make the instances both textually the same and equivalent in the strict
+XML sense to suggest how changes to the schema definition without necessarily
+needing to change the namespace.
 \subsection{Minor changes}
 \subsubsection{Determining if the changes are indeed minor}
 \subsection{Indicating the version number}
-\subse
-\section{Hosting the Schema on the IVOA web site}
+
+
+\section{Schema Use}
+The schemata that are used in the IVOA standard services and data models are
+listed below
+\begin{itemize}
+  \item VOTable
+  \item \ldots
+\end{itemize}
+
+As mentioned in the introduction the schemata are typically associated with a
+particular version of a standard and so are typically included in an appendix of
+the standard and in addition are located on the ivoa website
+\url{http://www.ivoa.net/schema} to allow software authors easily to obtain the
+latest version.
+\subsection{Hosting the Schema on the IVOA web site}
 Existing practice has used namespace URIs that correspond to a URL that points
-to the 
+to the location that the 
+
+
+
+
+\subsection{Server use}
+
+
+\subsection{Client use}
+\subsection{}
 \section{Summary of Recommendations}
 This section summarizes the main recommendations contained within this document.
 
