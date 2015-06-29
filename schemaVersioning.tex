@@ -1,10 +1,36 @@
-\documentclass[11pt,a4paper]{ivoa}
+\documentclass[10pt,a4paper]{ivoa}
 \input tthdefs
 
+\usepackage{color}
 \usepackage{listings}
-\lstloadlanguages{sh,make,[latex]tex}
+\lstloadlanguages{sh,make,[latex]tex,XML,XSLT}
 \lstset{flexiblecolumns=true,numberstyle=\small,numbers=left,
-  identifierstyle=\texttt,defaultdialect=[latex]tex,language=tex}
+  identifierstyle=\texttt}
+
+
+\usepackage{color}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape
+}
+
+\lstdefinelanguage{XML}
+{
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  stringstyle=\color{black},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\color{cyan},
+ % morekeywords={xmlns,version,type}% list your attributes here
+}
+
 
 \usepackage{todonotes}
 
@@ -38,17 +64,16 @@
 
 \previousversion{This is the first public release}
        
-
 \begin{document}
 
-\SVN$Rev: 2940 $
-\SVN$Date: 2015-05-04 10:52:00 +0100 (Mon, 04 May 2015) $
-\SVN$URL: https://volute.googlecode.com/svn/trunk/projects/ivoapub/ivoatexDoc/ivoatexDoc.tex $
+\SVN$Rev$
+\SVN$Date$
+\SVN$URL$
 
 \begin{abstract}
 This note describes the recommended practice for the evolution of IVOA
-standard XML schemata.  The criteria for deciding what might be considered major
-and minor changes and the policies for dealing with each case are described.
+standard XML schemata that are associated with IVOA standards.  The criteria for
+deciding what might be considered major and minor changes and the policies for dealing with each case are described.
 \end{abstract}
 
 
@@ -63,8 +88,8 @@ session at the June 2015 IVOA interoperability meeting in Sesto, Italy.
 Many of the standard protocols and data models developed by
 the International Virtual Observatory Association (IVOA) have used XML
 \citet{std:XML} for message or object serialization. The content of this XML has
-been defined using XML schema definition language (XSD) \citet{std:XSD}. The
-particular schema that has been associated with a standard 
+usually been defined using XML schema definition language (XSD) \citet{std:XSD}.
+The particular schema that has been associated with a standard 
 is defined by the ``target namespace'' (hereafter refered to as simply ``the
 namespace'') of the schema - the namespace identifier itself is a URI that
 typically has a form that contains the version number of the standard. There
@@ -102,53 +127,145 @@ conventions as not equivalent if the only textual difference between them is
 that the namespace declaration is not the same. We
 can use the observation that simply removing the namespace definition from both instances
 would make the instances both textually the same and equivalent in the strict
-XML sense to suggest how changes to the schema definition without necessarily
-needing to change the namespace.
+XML sense to inform the class of changes can be to the schema definition without
+necessarily needing to change the namespace, and how a client should treat such
+changes.
 \subsection{Minor changes}
+In general the class of changes that might be considered minor are those which; 
+\begin{itemize}
+  \item Do not remove concepts (i.e. elements or attributes) from the old
+  schema.
+  \item Make any new concepts that are introduced optional.
+\end{itemize}
+Even with the restrictive conditions above it is still necessary that any
+consumer of XML instance documents takes the approach that it does not do strict
+schema validation against the version of the schema that it knows about, but
+rather ignore everything that it does not understand. This approach is allowable
+because any new concepts are optional even for consumers of the XML instance
+that are aware of the latest version of the schema, and so clients cannot use
+this information for fundamental changes in the behaviour of an IVOA protocol.
+In other words the IVOA protocol remains backwards compatible and would only
+warrant a ``point change'' in the standard version.
+
+Conversely if the conditions above cannot be met by an evolution of an IVOA
+standard then it is a indication that the standard is undergoing a ``major
+change'' and backwards compatibility may be broken. Such a change would
+involve both a change in the first part of the standard document's version
+ number as well as a change in the version used in the schema
+namespace.
 \subsubsection{Determining if the changes are indeed minor}
+Although the conditions outlined above for minor changes should generally be
+strictly adhered to in the design of minor extensions to standards, there are
+occasions where a new version of a standard might try to correct an error made
+in a previous version. For example a certain construct could have been
+schema valid which the should not have been allowed in a correctly authored
+schema that expressed the intentions of the standard. In this case it is likely
+the the correction would break the first of the above conditions, but hopefully
+clients would not be written to expect the unintentionally valid construct and
+would not be unduely impacted by the change. It would be up to the IVOA
+Technical Coordination Group (TGC) to determine the likely impact of such a
+change and whether the violation of the constraints for a minor change would be
+allowable in such circumstances.
+
 \subsection{Indicating the version number}
 
+When allowing minor changes to the schema without changing the
+namespace it becomes imperative that the the minor version number of the schema
+is communicated via a means other than the namespace. It is important that
+clients are able to know which version of the service was used to create an XML
+instance so that they might invoke new optional parts of the service. It is
+recommended that the instance documents have a required \xmlel{version}
+attribute on the top level element. It should be noted that for services where
+there might be several XML responses for different endpoints with different top
+level elements, then they should each have a \xmlel{version} attribute.
 
-\section{Schema Use}
-The schemata that are used in the IVOA standard services and data models are
-listed below
-\begin{itemize}
-  \item VOTable
-  \item \ldots
-\end{itemize}
+\subsubsection{Indicating the schema document version}
+It is of similar importance to software writers to know exactly the version of
+the schema that they are using - In the XSD definition there is an appropriate
+\xmlel{version} attribute on the top level \xmlel{<schema>} element that can be
+used for this purpose.
 
+\begin{lstlisting}[language=XML]
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+   targetNamespace="http://www.ivoa.net/xml/UWS/v1.0"
+   xmlns:uws="http://www.ivoa.net/xml/UWS/v1.0"
+   xmlns:xlink="http://www.w3.org/1999/xlink" 
+   elementFormDefault="qualified"
+   attributeFormDefault="unqualified"
+   version="1.1-PR-20150626"
+>
+\end{lstlisting}
+
+This version attribute is not used formally by the schema validation machinery
+but can be used as desired here to indicate a precise version of the schema
+given that the namespace is only used to differentiate between major revisions
+of the schema.
+
+
+
+\section{Hosting the Schema on the IVOA Web Site}
 As mentioned in the introduction the schemata are typically associated with a
 particular version of a standard and so are typically included in an appendix of
-the standard and in addition are located on the ivoa website
-\url{http://www.ivoa.net/schema} to allow software authors easily to obtain the
-latest version.
-\subsection{Hosting the Schema on the IVOA web site}
-Existing practice has used namespace URIs that correspond to a URL that points
-to the location that the 
+the standard. In addition are located on the ivoa website
+\url{http://www.ivoa.net/schema} to allow software authors interactively to
+obtain the latest version directly as a file.
 
+The availability of the schemata via the IVOA web site also
+allows XML parsers to be instructed to fetch the schema automatically when
+validating an XML instance. This is done using the \xmlel{xsi:schemaLocation}
+attribute which pairs a namespace with the URL of a schema that has definitions
+in that namespace. Although there is no particular necessity to do so, it has
+been standard practice to use namespaces that have a one-to-one correspondence
+with a location on the IVOA web site. The advantage of this approach is that the
+namespace is ``owned'' by the IVOA and there is therefore much less chance of
+accidental clashes of namespaces.
 
+As this note now recommends that there are potentially many minor versions of a
+schema all in the same namespace this one-to-one correspondence between
+namespace and URL needs to be broken if all versions of the XSD schema documents
+are to be available to download. It is recommended that the URL that
+corresponds to namespace be the location of the the latest (possibly minor)
+version of schema, and that the older minor versions of the schema be moved to
+be available at other locations on the IVOA web site.
+\todo{We need to determine what would be a good URL strategy that is not too
+burdensome on the IVOA document coordinator to implement - need to think up a
+general scheme for finding old versions.}
 
+\subsection{Client use of schema}
+Using this strategy means that client software that simply uses validation with
+the parser utilizing this schema location hint will always pick up the latest
+version of the schema, which should mean that the instance document will always
+be valid assuming that the server has created a strictly valid document. Note
+that this still applies even if the server is using an older (minor) version of
+the schema, as new versions are only allowed to add optional features to the
+schema.
 
-\subsection{Server use}
+It is often the case that client software is written to use a local copy of the
+schema to avoid the overhead of continually downloading the schema. In this case
+it is possible that the XML instance document will not be valid against the
+local schema if the server is working against a newer minor version of the
+schema - as it could have added an new optional element into the XML instance.
+It is for this reason that the client side of an IVOA service should be
+forgiving in ignoring elements that it is not expecting. It is possible for the
+client to recognise that the XML instance is valid against a newer version of
+the schema by comparing the version attribute of the root element of the XML
+instance against the version attribute in the local XSD schema document.
 
-
-\subsection{Client use}
-\subsection{}
 \section{Summary of Recommendations}
 This section summarizes the main recommendations contained within this document.
 
 \begin{itemize}
-\item Namespace URL should contain only the associated standard major number
-(x.0).
+\item The namespace URL should contain only the associated standard major number
+(x.0), and therefore does not change when a minor version increment occurs.
+e.g.\ \texttt{http://www.ivoa.net/xml/UWS/v1.0}
 
-\item Include a version attribute in the top level element to allow client
-version discovery - this version number should include the full standard version
+\item Include a \xmlel{version} attribute in the top level element to allow
+client version discovery - this version number should include the full standard version
 number including the minor version increment. - 1.1
 
-\item Set the version attribute of the <schema> element in the XSD to be equal
-to the full standard version including the minor version increment and document status - to
-allow software writers to be clear about exactly which version of the schema
-they are using 1.1-20150607-WD
+\item Set the \xmlel{version} attribute of the \xmlel{<schema>} element in the
+XSD to be equal to the full standard version including the minor version
+increment and document status and version - e.g.\ 1.1-WD-20150607
 
 \item Minor version changes should not break clients - i.e. in general they
 should only add new elements/attributes, not remove formerly valid content -
@@ -159,7 +276,7 @@ validation error is because of a missing required element then they should
 issue an error).
 \item In contrast servers must produce strictly valid documents, and service
 validators must test strict validity against the relevant schema (discovered
-from the namespace and the version element)
+from the namespace and the version element).
 \end{itemize}
 
 
