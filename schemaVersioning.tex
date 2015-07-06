@@ -202,15 +202,28 @@ allowable in such circumstances.
 
 When allowing minor changes to the schema without changing the
 namespace it becomes imperative that the the minor version number of the schema
-is communicated via a means other than the namespace. It is important that
-clients are able to know which version of the service was used to create an XML
-instance so that they might invoke new optional parts of the service. It is
-recommended that the instance documents have a required \xmlel{version}
-attribute on the top level element. It should be noted that for services where
-there might be several XML responses for different endpoints with different top
-level elements, then they should each have a \xmlel{version} attribute.
+is communicated via a means other than the namespace.  This is true for
+both instance documents and schema documents.
 
-\subsubsection{Indicating the schema document version}
+\subsubsection{Version numbers in instance documents}
+
+It is important that
+clients are able to know which version of the schema was used to create an XML
+instance.  A common use case envisioned is that in service responses,
+this information can be used to discover a service's ability to
+correctly respond to newly specified parts of the protocols. 
+
+Hence, in service responses root elements must have
+a \xmlel{version}
+attribute exactly giving the value of the correspoing XSD file's
+\xmlel{version} attribute.
+
+When global elements from a different schema are included within other
+XML files, each of these global elemens should have a version attribute
+of its own.  Where the discovery of extended capabilities is not a
+likely use case, such version attributes may be left out.
+
+\subsubsection{Version numbers in schema files}
 It is of similar importance to software writers to know exactly the version of
 the schema that they are using. In the XSD definition there is an appropriate
 \xmlel{version} attribute on the top level \xmlel{<schema>} element that can be
