@@ -87,8 +87,10 @@ session at the June 2015 IVOA interoperability meeting in Sesto, Italy.
 
 Many of the standard protocols and data models developed by
 the International Virtual Observatory Association (IVOA) have used XML
-\citet{std:XML} for message or object serialization. The content of this XML has
-usually been defined using XML schema definition language (XSD) \citet{std:XSD}.
+\citep{std:XML} for message or object serialization. The structure of
+these XML files has
+usually been constrained using the XML schema definition language
+\citep{std:XSD}, or XSD for short.
 The particular schema that has been associated with a standard 
 is defined by the ``target namespace'' (hereafter refered to as simply ``the
 namespace'') of the schema - the namespace identifier itself is a URI that
@@ -100,7 +102,8 @@ structure defined by the schema then it is known as ``valid'' and even a small
 deviation from the specified structure will mean that the XML instance is
 ``invalid''. This strong check of validity is extremely useful in the context of
 interoperating services and clients within the VO as it guarantees that both
-sides of an interaction will agree on the content of the document. To maintain
+sides of an interaction will agree on the structure of the document and
+hence its interpretation. To maintain
 this behaviour, the conventional XSD practice is to give the schema a new
 identity (namespace) if any changes are made to it so that both client and
 server can agree on the exact version of a schema that they are using for
@@ -112,13 +115,37 @@ schema - any changes to the definition of the schema that is subsequently used
 by a new version of the service to create instance documents will result in
 immediate classification as ``invalid'' by the clients that have not themselves being
 updated to use the new schema.
-As explained above, in general this property is desireable for guaranteeing interoperability, but it does limit
+As explained above, in general this property is desirable for guaranteeing interoperability, but it does limit
 the ability even to correct errors in the original schema definition without
-causing distruption to the deployed clients. This note describes the
+causing distruption to the deployed clients. 
+
+A related problem occurs because to namespace-aware XML parsers, the
+element name is a tuple of the namespace URI and the tag content.  For
+instance, in the XML document
+
+\begin{lstlisting}[language=XML]
+<doc xmlns="http://example.com/1.0"/>
+\end{lstlisting}
+
+the full name of the element is conventionally written as
+\verb|{http://example.com/1.0}doc|, and clients will expect this full
+form, whether or not they perform schema validation.  As soon as the
+namespace changes, any client expecting this element name will no longer
+understand anything in the document.  Rather typically, however, the
+client would still be able to make sense of the document as far as it is
+relevant to the client if it ignored the namespace part of the element
+name.  In consequence, many clients started discarding the namespace
+part entirely, which then leads to new interoperability problems, for
+instance, when elements from a different namespace are embedded within
+such a document.  Hence it is desirable to limit namespace changes to
+cases when legacy clients would definitely break.
+
+This note describes the
 circumstances in which it is permissible to make changes to a schema and not
 change its namespace.
 
-\url{http://www.xfront.com/Versioning.pdf}
+\url{http://www.xfront.com/Versioning.pdf}\todo{What's the meaning of
+this URI?}
 
 
 \section{Schema Versioning}
@@ -131,7 +158,11 @@ XML sense to inform the class of changes can be to the schema definition without
 necessarily needing to change the namespace, and how a client should treat such
 changes.
 \subsection{Minor changes}
-In general the class of changes that might be considered minor are those which; 
+In general the class of changes that might be considered minor are those
+which; \todo{Actually, I'd prefer to have a functional criterion here,
+along the lines of: ``when legacy clients ignoring any additional
+content keep functioning''}
+
 \begin{itemize}
   \item Do not remove concepts (i.e. elements or attributes) from the old
   schema.
@@ -181,7 +212,7 @@ level elements, then they should each have a \xmlel{version} attribute.
 
 \subsubsection{Indicating the schema document version}
 It is of similar importance to software writers to know exactly the version of
-the schema that they are using - In the XSD definition there is an appropriate
+the schema that they are using. In the XSD definition there is an appropriate
 \xmlel{version} attribute on the top level \xmlel{<schema>} element that can be
 used for this purpose.
 
@@ -257,11 +288,13 @@ This section summarizes the main recommendations contained within this document.
 \begin{itemize}
 \item The namespace URL should contain only the associated standard major number
 (x.0), and therefore does not change when a minor version increment occurs.
-e.g.\ \texttt{http://www.ivoa.net/xml/UWS/v1.0}
+e.g.\ \texttt{http://www.ivoa.net/xml/UWS/v1.0}\todo{Markus believes the
+``.0'' should not be present here.  Namespace URIs should always point
+to major versions only.}
 
 \item Include a \xmlel{version} attribute in the top level element to allow
 client version discovery - this version number should include the full standard version
-number including the minor version increment. - 1.1
+number including the minor version increment. -- 1.1
 
 \item Set the \xmlel{version} attribute of the \xmlel{<schema>} element in the
 XSD to be equal to the full standard version including the minor version
