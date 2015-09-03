@@ -117,7 +117,7 @@ immediate classification as ``invalid'' by the clients that have not themselves 
 updated to use the new schema.
 As explained above, in general this property is desirable for guaranteeing interoperability, but it does limit
 the ability even to correct errors in the original schema definition without
-causing distruption to the deployed clients. 
+causing disruption to the deployed clients. 
 
 A related problem occurs because to namespace-aware XML parsers, the
 element name is a tuple of the namespace URI and the tag content.  For
@@ -189,7 +189,7 @@ Although the conditions outlined above for minor changes should generally be
 strictly adhered to in the design of minor extensions to standards, there are
 occasions where a new version of a standard might try to correct an error made
 in a previous version. For example a certain construct could have been
-schema valid which the should not have been allowed in a correctly authored
+schema valid which should not have been allowed in a correctly authored
 schema that expressed the intentions of the standard. In this case it is likely
 the the correction would break the first of the above conditions, but hopefully
 clients would not be written to expect the unintentionally valid construct and
@@ -219,7 +219,7 @@ attribute exactly giving the value of the correspoing XSD file's
 \xmlel{version} attribute.
 
 When global elements from a different schema are included within other
-XML files, each of these global elemens should have a version attribute
+XML files, each of these global elements should have a version attribute
 of its own.  Where the discovery of extended capabilities is not a
 likely use case, such version attributes may be left out.
 
@@ -250,7 +250,7 @@ of the schema.
 \section{Hosting the Schema on the IVOA Web Site}
 As mentioned in the introduction the schemata are typically associated with a
 particular version of a standard and so are typically included in an appendix of
-the standard. In addition are located on the ivoa website
+the standard. In addition they are located on the ivoa website
 \url{http://www.ivoa.net/schema} to allow software authors interactively to
 obtain the latest version directly as a file.
 
