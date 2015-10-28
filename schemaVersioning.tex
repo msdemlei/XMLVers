@@ -144,9 +144,6 @@ This note describes the
 circumstances in which it is permissible to make changes to a schema and not
 change its namespace.
 
-\url{http://www.xfront.com/Versioning.pdf}\todo{What's the meaning of
-this URI?}
-
 
 \section{Schema Versioning}
 It is the case that two XML instances are formally regarded by XML
@@ -159,14 +156,15 @@ necessarily needing to change the namespace, and how a client should treat such
 changes.
 \subsection{Minor changes}
 In general the class of changes that might be considered minor are those
-which; \todo{Actually, I'd prefer to have a functional criterion here,
-along the lines of: ``when legacy clients ignoring any additional
-content keep functioning''}
+which allow legacy clients (i.e. without rewriting) to keep functioning with
+content produced against the new schema.
+Specific structual changes to the schema that allow that goal to be achieved
+include:
 
 \begin{itemize}
-  \item Do not remove concepts (i.e. elements or attributes) from the old
+  \item Not removing concepts (i.e. elements or attributes) from the old
   schema.
-  \item Make any new concepts that are introduced optional.
+  \item Making any new concepts that are introduced optional.
 \end{itemize}
 Even with the restrictive conditions above it is still necessary that any
 consumer of XML instance documents takes the approach that it does not do strict
@@ -251,7 +249,7 @@ of the schema.
 As mentioned in the introduction the schemata are typically associated with a
 particular version of a standard and so are typically included in an appendix of
 the standard. In addition they are located on the ivoa website
-\url{http://www.ivoa.net/schema} to allow software authors interactively to
+\url{http://www.ivoa.net/xml} to allow software authors interactively to
 obtain the latest version directly as a file.
 
 The availability of the schemata via the IVOA web site also
@@ -264,16 +262,22 @@ with a location on the IVOA web site. The advantage of this approach is that the
 namespace is ``owned'' by the IVOA and there is therefore much less chance of
 accidental clashes of namespaces.
 
+Thus a current schema is usually available at two URLs on the IVOA site;
+\begin{enumerate}
+  \item at a URL that corresponds to the namespace \newline e.g.
+  \texttt{http://www.ivoa.net/xml/UWS/v1.0}
+  \item at a URL that corresponds to the filename of the schema \newline e.g.
+  \texttt{http://www.ivoa.net/xml/UWS/UWS-v1.0.xsd}
+\end{enumerate}
+
 As this note now recommends that there are potentially many minor versions of a
-schema all in the same namespace this one-to-one correspondence between
-namespace and URL needs to be broken if all versions of the XSD schema documents
-are to be available to download. It is recommended that the URL that
-corresponds to namespace be the location of the the latest (possibly minor)
-version of schema, and that the older minor versions of the schema be moved to
-be available at other locations on the IVOA web site.
-\todo{We need to determine what would be a good URL strategy that is not too
-burdensome on the IVOA document coordinator to implement - need to think up a
-general scheme for finding old versions.}
+schema all in the same namespace the actual file than the first from of the URL
+above points to must be updated when a new minor version is published. The
+various minor versions of a particular schema should be available at the
+``filename'' style URLs of the second kind. It should be noted that the
+actual file pointed to by the ``namespace'' style URL should only be updated to
+point to the new minor version when the associated standard has reached the
+``recommendation'' stage.
 
 \subsection{Client use of schema}
 Using this strategy means that client software that simply uses validation with
@@ -299,11 +303,11 @@ instance against the version attribute in the local XSD schema document.
 This section summarizes the main recommendations contained within this document.
 
 \begin{itemize}
-\item The namespace URL should contain only the associated standard major number
-(x.0), and therefore does not change when a minor version increment occurs.
-e.g.\ \texttt{http://www.ivoa.net/xml/UWS/v1.0}\todo{Markus believes the
-``.0'' should not be present here.  Namespace URIs should always point
-to major versions only.}
+\item The namespace URI should contain only the associated standard major number, 
+and therefore does not change when a minor version increment occurs.
+e.g.\ \texttt{http://www.ivoa.net/xml/ABC/v1}. However, existing namespace URIs
+which contain a ``\texttt{.0}'' minor increment suffix should not be changed to
+conform to this rule.
 
 \item Include a \xmlel{version} attribute in the top level element to allow
 client version discovery - this version number should include the full standard version
