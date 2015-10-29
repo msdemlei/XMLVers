@@ -119,16 +119,15 @@ As explained above, in general this property is desirable for guaranteeing inter
 the ability even to correct errors in the original schema definition without
 causing disruption to the deployed clients. 
 
-A related problem occurs because to namespace-aware XML parsers, the
+A related problem occurs because, to namespace-aware XML parsers, the
 element name is a tuple of the namespace URI and the tag content.  For
 instance, in the XML document
 
 \begin{lstlisting}[language=XML]
 <doc xmlns="http://example.com/1.0"/>
 \end{lstlisting}
-
-the full name of the element is conventionally written as
-\verb|{http://example.com/1.0}doc|, and clients will expect this full
+the fully qualified name of the element includes the namespace and is
+conventionally written as \verb|{http://example.com/1.0}doc|, and clients will expect this full
 form, whether or not they perform schema validation.  As soon as the
 namespace changes, any client expecting this element name will no longer
 understand anything in the document.  Rather typically, however, the
@@ -189,7 +188,7 @@ occasions where a new version of a standard might try to correct an error made
 in a previous version. For example a certain construct could have been
 schema valid which should not have been allowed in a correctly authored
 schema that expressed the intentions of the standard. In this case it is likely
-the the correction would break the first of the above conditions, but hopefully
+that the correction would break the first of the above conditions, but hopefully
 clients would not be written to expect the unintentionally valid construct and
 would not be unduely impacted by the change. It would be up to the IVOA
 Technical Coordination Group (TGC) to determine the likely impact of such a
@@ -211,7 +210,7 @@ instance.  A common use case envisioned is that in service responses,
 this information can be used to discover a service's ability to
 correctly respond to newly specified parts of the protocols. 
 
-Hence, in service responses root elements must have
+Hence, in service responses, root elements must have
 a \xmlel{version}
 attribute exactly giving the value of the correspoing XSD file's
 \xmlel{version} attribute.
@@ -292,7 +291,7 @@ It is often the case that client software is written to use a local copy of the
 schema to avoid the overhead of continually downloading the schema. In this case
 it is possible that the XML instance document will not be valid against the
 local schema if the server is working against a newer minor version of the
-schema - as it could have added an new optional element into the XML instance.
+schema - as it could have added a new optional element into the XML instance.
 It is for this reason that the client side of an IVOA service should be
 forgiving in ignoring elements that it is not expecting. It is possible for the
 client to recognise that the XML instance is valid against a newer version of
