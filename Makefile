@@ -22,6 +22,6 @@ FIGURES =
 # List of PDF figures (for vector graphics)
 VECTORFIGURES = 
 
-AUX_FILES=custom.css
+AUX_FILES=
 
 include ivoatex/Makefile
