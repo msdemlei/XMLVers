@@ -157,13 +157,13 @@ changes.
 In general the class of changes that might be considered minor are those
 which allow legacy clients (i.e. without rewriting) to keep functioning with
 content produced against the new schema.
-Specific structual changes to the schema that allow that goal to be achieved
+Specific structual changes to the schema that allow this goal to be achieved
 include:
 
 \begin{itemize}
   \item Not removing concepts (i.e. elements or attributes) from the old
   schema.
-  \item Making any new concepts that are introduced optional.
+  \item Ensuring that any new concepts are optional.
 \end{itemize}
 Even with the restrictive conditions above it is still necessary that any
 consumer of XML instance documents takes the approach that it does not do strict

@@ -7,7 +7,7 @@ DOCNAME = schemaVersioning
 DOCVERSION = 1.0
 
 # Publication date, ISO format; update manually for "releases"
-DOCDATE = 2015-06-29
+DOCDATE = 2015-10-29
 
 # What is it you're writing: NOTE, WD, PR, or REC
 DOCTYPE = NOTE
