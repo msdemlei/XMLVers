@@ -31,6 +31,7 @@
  % morekeywords={xmlns,version,type}% list your attributes here
 }
 
+\hyphenation{name-space}
 
 \usepackage{todonotes}
 
@@ -93,7 +94,7 @@ usually been constrained using the XML schema definition language
 \citep{std:XSD}, or XSD for short.
 The particular schema that has been associated with a standard 
 is defined by the ``target namespace'' (hereafter refered to as simply ``the
-namespace'') of the schema - the namespace identifier itself is a URI that
+namespace'') of the schema -- the namespace identifier itself is a URI that
 typically has a form that contains the version number of the standard. There
 exist in many programming languages XML parsers that can use the XSD schema
 automatically to do a strong check whether an instance of an XML
@@ -111,7 +112,7 @@ checking validity of an XML instance.
 
 Once a VO service has been standardised there will typically be a growing number
 of clients that are coded against the particular version of the
-schema - any changes to the definition of the schema that is subsequently used
+schema -- any changes to the definition of the schema that is subsequently used
 by a new version of the service to create instance documents will result in
 immediate classification as ``invalid'' by the clients that have not themselves being
 updated to use the new schema.
@@ -168,7 +169,7 @@ include:
 Even with the restrictive conditions above it is still necessary that any
 consumer of XML instance documents takes the approach that it does not do strict
 schema validation against the version of the schema that it knows about, but
-rather ignore everything that it does not understand. This approach is allowable
+rather ignores everything that it does not understand. This approach is allowable
 because any new concepts are optional even for consumers of the XML instance
 that are aware of the latest version of the schema, and so clients cannot use
 this information for fundamental changes in the behaviour of an IVOA protocol.
@@ -212,7 +213,7 @@ correctly respond to newly specified parts of the protocols.
 
 Hence, in service responses, root elements must have
 a \xmlel{version}
-attribute exactly giving the value of the correspoing XSD file's
+attribute exactly giving the value of the corresponding XSD file's
 \xmlel{version} attribute.
 
 When global elements from a different schema are included within other
@@ -278,7 +279,7 @@ actual file pointed to by the ``namespace'' style URL should only be updated to
 point to the new minor version when the associated standard has reached the
 ``recommendation'' stage.
 
-\subsection{Client use of schema}
+\section{Client use of schema}
 Using this strategy means that client software that simply uses validation with
 the parser utilizing this schema location hint will always pick up the latest
 version of the schema, which should mean that the instance document will always
@@ -291,7 +292,7 @@ It is often the case that client software is written to use a local copy of the
 schema to avoid the overhead of continually downloading the schema. In this case
 it is possible that the XML instance document will not be valid against the
 local schema if the server is working against a newer minor version of the
-schema - as it could have added a new optional element into the XML instance.
+schema -- as it could have added a new optional element into the XML instance.
 It is for this reason that the client side of an IVOA service should be
 forgiving in ignoring elements that it is not expecting. It is possible for the
 client to recognise that the XML instance is valid against a newer version of
@@ -309,17 +310,18 @@ which contain a ``\texttt{.0}'' minor increment suffix should not be changed to
 conform to this rule.
 
 \item Include a \xmlel{version} attribute in the top level element to allow
-client version discovery - this version number should include the full standard version
+client version discovery -- this version number should include the full standard version
 number including the minor version increment. -- 1.1
 
 \item Set the \xmlel{version} attribute of the \xmlel{<schema>} element in the
 XSD to be equal to the full standard version including the minor version
-increment and document status and version - e.g.\ 1.1-WD-20150607
+increment and document status and version -- e.g.\ 1.1-WD-20150607
 
-\item Minor version changes should not break clients - i.e. in general they
-should only add new elements/attributes, not remove formerly valid content -
+\item Minor version changes should not break clients -- i.e. in general they
+should only add new elements/attributes, not remove formerly valid
+content --
 correspondingly, this means that clients should quietly ignore things that they
-do not know about in the XML - i.e. they should not automatically issue an error
+do not know about in the XML -- i.e. they should not automatically issue an error
 if schema validation fails (though of course if they can determine that the
 validation error is because of a missing required element then they should
 issue an error).
