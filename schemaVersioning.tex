@@ -2,6 +2,7 @@
 \input tthdefs
 
 \usepackage{color}
+\usepackage{todonotes}
 \usepackage{listings}
 \lstloadlanguages{sh,make,[latex]tex,XML,XSLT}
 \lstset{flexiblecolumns=true,numberstyle=\small,numbers=left,
@@ -244,6 +245,50 @@ given that the namespace is only used to differentiate between major revisions
 of the schema.
 
 
+\subsubsection{Version numbers in Namespace URIs}
+
+In the IVOA, namespace URIs traditionally contained the full version
+specification, as in \nolinkurl{http://www.ivoa.net/xml/UWS/v1.0}.
+This practice is somewhat paradoxical, as changes in the minor version
+number should, by the IVOA's document standards
+\citep{2010ivoa.spec.0413H}, not break downwards compatibility, but a
+change in the namespace URI is, as argued above, incompatible in both
+directions.
+
+Therefore, future namespace URI must only contain the major version
+number.  The recommended format is to have the major version as the last
+URI element, for instance,
+
+$$\hbox{\nolinkurl{http://www.ivoa.net/xml/UWS/2}.}$$
+
+An unfortunate side effect of the proposal made in this note is
+that legacy namespace URIs become somewhat confusing, as a namespace
+like \nolinkurl{http://www.ivoa.net/xml/UWS/v1.0} can be defined by
+schema documents with actual versions 1.1, 1.2, etc.  
+
+Specifications employing such legacy namespace URIs should warn their
+readers to this effect.  The suggested presentation is an admonition box
+with a content like this:
+
+\begin{quotation}
+The namespace URI \nolinkurl{http://www.ivoa.net/xml/UWS/v1.0} is used
+for backwards compatibility.  The presence of the string \texttt{v1.0}
+does \emph{not} indicate that the document content conforms to version
+1.0 of the schema, or can be validated against that schema.  It does
+indicate, however, that documents valid according to version 1.0 of the
+schema still validate with the current schema file.  It also means that
+any XML reader compliant with the recommentations of in Harrison et al
+(2016) [this would be a reference to the current version of this note]
+must be able to process the elements' content if they support any
+version 1.0 or later of this specification.
+
+The version an instance document actually conforms to can be obtained
+from the \xmlel{version} attribute on the instance document's root
+element [or the element containing the namespace declaration, if
+applicable].  
+\end{quotation}
+
+
 
 \section{Hosting the Schema on the IVOA Web Site}
 As mentioned in the introduction the schemata are typically associated with a
@@ -343,7 +388,7 @@ No previous versions yet.
 % Use itemize environments.
 
 
-\bibliography{ivoatex/ivoabib}
+\bibliography{ivoatex/ivoabib,ivoatex/docrepo}
 
 
 \end{document}
