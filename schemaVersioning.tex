@@ -208,11 +208,12 @@ both instance documents and schema documents.
 
 It is important that
 clients are able to know which version of the schema was used to create an XML
-instance.  A common use case envisioned is that in service responses,
+instance.  A common use case envisioned is that
 this information can be used to discover a service's ability to
 correctly respond to newly specified parts of the protocols. 
 
-Hence, in service responses, root elements must have
+Hence, in conforming documents (e.g., service responses), 
+root elements must have
 a \xmlel{version}
 attribute exactly giving the value of the corresponding XSD file's
 \xmlel{version} attribute.
@@ -221,6 +222,31 @@ When global elements from a different schema are included within other
 XML files, each of these global elements should have a version attribute
 of its own.  Where the discovery of extended capabilities is not a
 likely use case, such version attributes may be left out.
+
+As an example, consider a VOSpace 2.1 transfer element within a UWS 1.1
+job element:
+
+\begin{lstlisting}[language=xml]
+<uws:job 
+    xmlns:uws="http://www.ivoa.net/xml/UWS/v1.0" 
+    version="1.1">
+  <uws:jobId>sv_ex</uws:jobId>
+  ...
+  <uws:jobInfo>
+    <vos:transfer 
+        xmlns:vos="http://www.ivoa.net/xml/VOSpace/v2.0"
+        version="2.1">
+      <vos:target>vos://example.com!vospace/mydata1</vos:target>
+      ...
+  </uws:jobInfo>
+</uws:job>
+\end{lstlisting}
+
+Note how both global elements in the example (\xmlel{uws:job} and
+\xmlel{vos:transfer}) have a \xmlel{version} attribute.  This example
+also illustrates how with legacy namespace URIs, the minor version
+apparently indicated by the namespace URI is different from the actual
+minor version relevant as declared using the \xmlel{version} attribute.
 
 \subsubsection{Version numbers in schema files}
 It is of similar importance to software writers to know exactly the version of
@@ -259,7 +285,7 @@ Therefore, future namespace URI must only contain the major version
 number.  The recommended format is to have the major version as the last
 URI element, for instance,
 
-$$\hbox{\nolinkurl{http://www.ivoa.net/xml/UWS/2}.}$$
+$$\hbox{\nolinkurl{http://www.ivoa.net/xml/UWS/2} .}$$
 
 An unfortunate side effect of the proposal made in this note is
 that legacy namespace URIs become somewhat confusing, as a namespace
