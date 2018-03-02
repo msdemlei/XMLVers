@@ -7,9 +7,9 @@ DOCNAME = schemaVersioning
 DOCVERSION = 1.0
 
 # Publication date, ISO format; update manually for "releases"
-DOCDATE = 2016-09-06
+DOCDATE = 2018-03-02
 
-DOCTYPE = PEN
+DOCTYPE = EN
 
 # Source files for the TeX document (but the main file must always
 # be called $(DOCNAME).tex
