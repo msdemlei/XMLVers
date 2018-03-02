@@ -23,4 +23,8 @@ VECTORFIGURES =
 
 AUX_FILES=
 
+IVOA_GROUP=No Group
+
+AUTHOR_EMAIL=msdemlei@ari.uni-heidelberg.de
+
 include ivoatex/Makefile
