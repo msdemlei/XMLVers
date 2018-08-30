@@ -4,7 +4,7 @@
 DOCNAME = schemaVersioning
 
 # count up; you probably do not want to bother with versions <1.0
-DOCVERSION = 1.0
+DOCVERSION = 1.1
 
 # Publication date, ISO format; update manually for "releases"
 DOCDATE = 2018-03-02

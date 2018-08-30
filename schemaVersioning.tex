@@ -64,7 +64,7 @@
 
 \editor{Paul Harrison}
 
-\previousversion{This is the first public release}
+\previousversion{v1.0}
        
 \begin{document}
 
@@ -202,7 +202,17 @@ allowable in such circumstances.
 When allowing minor changes to the schema without changing the
 namespace it becomes imperative that the the minor version number of the schema
 is communicated via a means other than the namespace.  This is true for
-both instance documents and schema documents.
+both instance documents and schema documents. However, the exact usage in each
+case means that the semantics of the ``version'' are subtly different;
+\begin{itemize}
+  \item In instance documents it is the overall version of the service/protocol
+  that is being conveyed.
+  \item In the \xmlel{schema} element itself it is the connection with the
+  accompanying standard document that should be represented.
+\end{itemize}
+
+This means that the textual content of each version will be different, as
+illustrated below.
 
 \subsubsection{Version numbers in instance documents}
 
@@ -213,10 +223,16 @@ this information can be used to discover a service's ability to
 correctly respond to newly specified parts of the protocols. 
 
 Hence, in conforming documents (e.g., service responses), 
-root elements must have
-a \xmlel{version}
-attribute exactly giving the value of the corresponding XSD file's
-\xmlel{version} attribute.
+root elements must have an
+attribute giving the value of the corresponding \it{major.minor} number of the
+accompanying standard document.
+
+The recommended local name of this attribute is
+\xmlel{stdVersion}. Previously the recommended name had been \xmlel{version},
+but this new name has been chosen to emphasise the difference in semantic role
+that the version takes in instance documents. Existing schema that use
+\xmlel{version} should not be considered in need of update because of this new
+recommendation.
 
 When global elements from a different schema are included within other
 XML files, each of these global elements should have a version attribute
@@ -248,6 +264,9 @@ also illustrates how with legacy namespace URIs, the minor version
 apparently indicated by the namespace URI is different from the actual
 minor version relevant as declared using the \xmlel{version} attribute.
 
+\todo{should anything be mandated about the style of stdVersion attribute or is
+it ok to do how you want}
+
 \subsubsection{Version numbers in schema files}
 It is of similar importance to software writers to know exactly the version of
 the schema that they are using. In the XSD definition there is an appropriate
@@ -268,8 +287,13 @@ used for this purpose.
 This version attribute is not used formally by the schema validation machinery
 but can be used as desired here to indicate a precise version of the schema
 given that the namespace is only used to differentiate between major revisions
-of the schema.
-
+of the schema. In general a new schema should only be published in tandem with a 
+new version of a standards document or an erratum to such a document, so this 
+particular \xmlel{version} attribute can be seen as a strong tie to the precise
+standard document rather than the less fine-grained overall standards versioning
+scheme.
+\todo{should say something about the formatting of this if as a result of
+erratum}
 
 \subsubsection{Version numbers in Namespace URIs}
 
@@ -309,7 +333,7 @@ must be able to process the elements' content if they support any
 version 1.0 or later of this specification.
 
 The version an instance document actually conforms to can be obtained
-from the \xmlel{version} attribute on the instance document's root
+from the \xmlel{stdVersion} attribute on the instance document's root
 element [or the element containing the namespace declaration, if
 applicable].  
 \end{quotation}
@@ -380,11 +404,11 @@ e.g.\ \texttt{http://www.ivoa.net/xml/ABC/v1}. However, existing namespace URIs
 which contain a ``\texttt{.0}'' minor increment suffix should not be changed to
 conform to this rule.
 
-\item Include a \xmlel{version} attribute in the top level element to allow
+\item Include a \xmlel{stdVersion} attribute in the top level element to allow
 client version discovery -- this version number should include the full standard version
 number including the minor version increment. -- 1.1
 
-\item Set the \xmlel{version} attribute of the \xmlel{<schema>} element in the
+\item Set the \xmlel{stdVersion} attribute of the \xmlel{<schema>} element in the
 XSD to be equal to the full standard version including the minor version
 increment and document status and version -- e.g.\ 1.1-WD-20150607
 
@@ -401,18 +425,21 @@ validators must test strict validity against the relevant schema (discovered
 from the namespace and the version element).
 \end{itemize}
 
-
-
-
 \appendix
 
 
 \section{Changes from Previous Versions}
 
-No previous versions yet.  
+\subsection{Changes from version 1.0}
 % these would be subsections "Changes from v. WD-..."
 % Use itemize environments.
-
+\begin{itemize}
+  \item recommend that instance document version attribute be named 
+  \xlmel{stdVersion} in the namepace of the parent schema rather than
+  \xmlel{version}.
+  \item emphasise how in the different usages, ``version'' can have different
+  semantic meanings and textual representation.
+\end{itemize}
 
 \bibliography{ivoatex/ivoabib,ivoatex/docrepo}
 
