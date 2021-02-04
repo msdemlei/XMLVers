@@ -7,7 +7,7 @@ DOCNAME = schemaVersioning
 DOCVERSION = 1.1
 
 # Publication date, ISO format; update manually for "releases"
-DOCDATE = 2018-03-02
+DOCDATE = 2018-05-29
 
 DOCTYPE = EN
 
