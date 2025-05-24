@@ -13,13 +13,13 @@ DOCTYPE = EN
 
 # Source files for the TeX document (but the main file must always
 # be called $(DOCNAME).tex
-SOURCES = $(DOCNAME).tex svnsubstitution.tex verbatimstyles.tex
+SOURCES = $(DOCNAME).tex gitmeta.tex verbatimstyles.tex
 
-# List of pixel image files to be included in submitted package 
-FIGURES = 
+# List of pixel image files to be included in submitted package
+FIGURES =
 
 # List of PDF figures (for vector graphics)
-VECTORFIGURES = 
+VECTORFIGURES =
 
 AUX_FILES=
 
@@ -27,4 +27,5 @@ IVOA_GROUP=No Group
 
 AUTHOR_EMAIL=msdemlei@ari.uni-heidelberg.de
 
+DOCREPO_BASEURL=http://ivoa.net/documents/Notes/XMLVers
 include ivoatex/Makefile
