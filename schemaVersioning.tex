@@ -65,12 +65,8 @@
 \editor{Paul Harrison}
 
 \previousversion{v1.0}
-       
-\begin{document}
 
-\SVN$Rev$
-\SVN$Date$
-\SVN$URL$
+\begin{document}
 
 \begin{abstract}
 This note describes the recommended practice for the evolution of IVOA
@@ -93,7 +89,7 @@ the International Virtual Observatory Association (IVOA) have used XML
 these XML files has
 usually been constrained using the XML schema definition language
 \citep{std:XSD}, or XSD for short.
-The particular schema that has been associated with a standard 
+The particular schema that has been associated with a standard
 is defined by the ``target namespace'' (hereafter refered to as simply ``the
 namespace'') of the schema -- the namespace identifier itself is a URI that
 typically has a form that contains the version number of the standard. There
@@ -119,7 +115,7 @@ immediate classification as ``invalid'' by the clients that have not themselves 
 updated to use the new schema.
 As explained above, in general this property is desirable for guaranteeing interoperability, but it does limit
 the ability even to correct errors in the original schema definition without
-causing disruption to the deployed clients. 
+causing disruption to the deployed clients.
 
 A related problem occurs because, to namespace-aware XML parsers, the
 element name is a tuple of the namespace URI and the tag content.  For
@@ -220,9 +216,9 @@ It is important that
 clients are able to know which version of the schema was used to create an XML
 instance.  A common use case envisioned is that
 this information can be used to discover a service's ability to
-correctly respond to newly specified parts of the protocols. 
+correctly respond to newly specified parts of the protocols.
 
-Hence, in conforming documents (e.g., service responses), 
+Hence, in conforming documents (e.g., service responses),
 root elements must have an
 attribute giving the value of the corresponding \textit{major.minor} number of the
 accompanying standard document.
@@ -243,13 +239,13 @@ As an example, consider a VOSpace 2.1 transfer element within a UWS 1.1
 job element:
 
 \begin{lstlisting}[language=xml]
-<uws:job 
-    xmlns:uws="http://www.ivoa.net/xml/UWS/v1.0" 
+<uws:job
+    xmlns:uws="http://www.ivoa.net/xml/UWS/v1.0"
     version="1.1">
   <uws:jobId>sv_ex</uws:jobId>
   ...
   <uws:jobInfo>
-    <vos:transfer 
+    <vos:transfer
         xmlns:vos="http://www.ivoa.net/xml/VOSpace/v2.0"
         version="2.1">
       <vos:target>vos://example.com!vospace/mydata1</vos:target>
@@ -277,7 +273,7 @@ used for this purpose.
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
    targetNamespace="http://www.ivoa.net/xml/UWS/v1.0"
    xmlns:uws="http://www.ivoa.net/xml/UWS/v1.0"
-   xmlns:xlink="http://www.w3.org/1999/xlink" 
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    elementFormDefault="qualified"
    attributeFormDefault="unqualified"
    version="1.1-PR-20150626"
@@ -287,8 +283,8 @@ used for this purpose.
 This version attribute is not used formally by the schema validation machinery
 but can be used as desired here to indicate a precise version of the schema
 given that the namespace is only used to differentiate between major revisions
-of the schema. In general a new schema should only be published in tandem with a 
-new version of a standards document or an erratum to such a document, so this 
+of the schema. In general a new schema should only be published in tandem with a
+new version of a standards document or an erratum to such a document, so this
 particular \xmlel{version} attribute can be seen as a strong tie to the precise
 standard document rather than the less fine-grained overall standards versioning
 scheme.
@@ -314,7 +310,7 @@ $$\hbox{\nolinkurl{http://www.ivoa.net/xml/UWS/2} .}$$
 An unfortunate side effect of the proposal made in this note is
 that legacy namespace URIs become somewhat confusing, as a namespace
 like \nolinkurl{http://www.ivoa.net/xml/UWS/v1.0} can be defined by
-schema documents with actual versions 1.1, 1.2, etc.  
+schema documents with actual versions 1.1, 1.2, etc.
 
 Specifications employing such legacy namespace URIs should warn their
 readers to this effect.  The suggested presentation is an admonition box
@@ -335,7 +331,7 @@ version 1.0 or later of this specification.
 The version an instance document actually conforms to can be obtained
 from the \xmlel{stdVersion} attribute on the instance document's root
 element [or the element containing the namespace declaration, if
-applicable].  
+applicable].
 \end{quotation}
 
 
@@ -398,7 +394,7 @@ instance against the version attribute in the local XSD schema document.
 This section summarizes the main recommendations contained within this document.
 
 \begin{itemize}
-\item The namespace URI should contain only the associated standard major number, 
+\item The namespace URI should contain only the associated standard major number,
 and therefore does not change when a minor version increment occurs.
 e.g.\ \texttt{http://www.ivoa.net/xml/ABC/v1}. However, existing namespace URIs
 which contain a ``\texttt{.0}'' minor increment suffix should not be changed to
@@ -434,7 +430,7 @@ from the namespace and the version element).
 % these would be subsections "Changes from v. WD-..."
 % Use itemize environments.
 \begin{itemize}
-  \item recommend that instance document version attribute be named 
+  \item recommend that instance document version attribute be named
   \xmlel{stdVersion} in the namepace of the parent schema rather than
   \xmlel{version}.
   \item emphasise how in the different usages, ``version'' can have different
